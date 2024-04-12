@@ -1,4 +1,0 @@
-DS2000/payroll.csv filter=lfs diff=lfs merge=lfs -text
-DS2000/'final[[:space:]]project[[:space:]]work'/payroll.csv filter=lfs diff=lfs merge=lfs -text
-*.params filter=lfs diff=lfs merge=lfs -text
-*DS2000/final[[:space:]]project[[:space:]]work/payroll.csv filter=lfs diff=lfs merge=lfs -text
