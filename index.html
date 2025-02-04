@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <!-- give the web browser a bunch of other information about this webpage, 
+  most of it not displayed to the user -->
+  <head>
+    <!-- tell the browser how to display text -->
+    <meta charset="utf-8" />
+
+    <!-- give search engines some background info on this page -->
+    <meta
+      name="description"
+      content="Donor Development page for Raising a Reader"
+    />
+    <meta
+      name="keywords"
+      content="Raising a Reader, education, Massachusetts, childhood, donate, donation"
+    />
+    <meta name="author" content="Sean Ayoub & Bethany Ward" />
+
+    <!-- tell the browser to render differently on mobile devices than in browsers 
+    on desktop machines -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- text that shows up in the browser tab -->
+    <title>Raising a Reader - Massachusetts</title>
+
+    <!-- INCLUDE CSS FILES -->
+    <!-- pull in the bootstrap CSS files from the 3rd party CDN they are hosted on -->
+    <script
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+
+    <!-- INCLUDE SCROLLAMA, D3, AND JAVASCRIPT FILES -->
+    <script src="https://unpkg.com/scrollama"></script>
+    <script src="project.js"></script>
+  </head>
+
+  <body>
+    <!--Nav bar stuff-->
+    <!-- none of these (except about.html) are actual pages on OUR end, but I imagine they are on 
+      RARMA's end, so in theory they can just slot them in. or delete this chunk. 
+      Made the About & Home active butt
+ons to
+       demonstrate ability within the scope of the class. -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <div class="topnav" role="navigation">
+      <!--menu, not nav for page exactly-->
+      <!--change to back to site button-->
+      <a class="active" href="#home">Home</a>
+      <a href="#Mission & Values">Mission & Values</a>
+      <a href="#Program">Program</a>
+      <a href="#Partners">Partners</a>
+      <a href="#News & Events">News & Events</a>
+      <a href="about.html">About Us</a>
+      <a href="#Contact">Contact</a>
+
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+
+    <header>
+      <div class="container">
+        <!-- tell bootstrap we're going to use a grid -->
+        <div class="row">
+          <div class="col-lg-6 offset-lg-3">
+            <!-- half-width & centered on desktop/tablet, full width on mobile -->
+
+            <h1>Raising a Reader</h1>
+
+            <p>Looking ahead from a year in review.</p>
+
+            <p>
+              <small><em>Where we've been, where we're going.</em></small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- the main section has the body of the story -->
+    <main>
+      <section id="scrolly">
+        <figure>
+          <!--MAIN BACKGROUND IMAGE-->
+          <div class="wrapper">
+            <img
+              src="https://barrfdn-prod.s3.amazonaws.com/crop/566/halfscreen_crop.jpg?1529008399"
+              alt="Students beam at the camera, holding red Raising a Reader bags."
+              class="responsive"
+              id="backdrop-img"
+            />
+          </div>
+
+          <!-- where does the following actually appear??
+
+            <figcaption> Students beam at the camera, holding red Raising a Reader bags.
+            </figcaption> 
+          -->
+        </figure>
+
+        <article>
+          <div class="step" data-step="1">
+            <p>
+              At Raising a Reader, our mission is to close the literacy
+              opportunity gap among children ages birth to six in
+              under-resourced communities by helping families develop and
+              practice shared home reading habits.
+            </p>
+          </div>
+
+          <div class="step" data-step="2">
+            <p>
+              More than thirty-five years of research shows that being regularly
+              read to by a caregiver before Kindergarten is a significant factor
+              impacting a child’s academic success. In Massachusetts, a child’s
+              reading comprehension is tested for the first time in third grade,
+              and the results are widely accepted by researchers as a predictor
+              of both high school successes and college enrollment.
+            </p>
+          </div>
+
+          <!-- make this part of step 2? Take them out of their boxes? Make this text glow?-->
+          <div class="step" data-step="3">
+            <p>
+              Results from the 2023 Massachusetts Comprehensive Assessment
+              System (MCAS) prove that third graders are <b>not</b> reading
+              proficiently, deeply impacting those in under-resourced
+              communities.
+            </p>
+          </div>
+
+          <div class="step" data-step="4">
+            <img
+              src="https://cdn.glitch.global/05db6cb4-1854-4ed6-a375-b75526b503d1/readingproficiency.png?v=1738650097288"
+              alt="Visualization showing percentage of third graders not reading proficiently, by region."
+              width = "800"
+              height = "300"
+            />
+          </div>
+
+          <div class="step" data-step="5">
+            <iframe
+              src="books_per_child_ratio.html"
+              width="100%"
+              height="500px"
+              style="border: none"
+            ></iframe>
+            <p>
+              In point, this visualization will illustrate the difference
+              between the ratio of books to children in middle income versus low
+              income communities when toggled. In middle income communities, the
+              ratio is 13 books to 1 child - in low income communities, it's 1
+              book to 300 children.
+            </p>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="step" data-step="6">
+            <p>
+              The most significant factor influencing a child’s early
+              educational success is an introduction to books and being read to
+              at home prior to beginning school. This is where we can help- by
+              funding Raising a Reader's programs, children will receive the
+              hands on support they need to read, learn, and thrive.
+            </p>
+          </div>
+
+          <div class="step" data-step="7">
+            <p>
+              <em
+                >Children learn best when they are actively involved in the
+                process.</em
+              >
+              Join us in our mission to bring the gift of literacy to even more
+              children and their families this year.
+            </p>
+          </div>
+
+          <!--This next step is so ugly. Ugh. I couldn't figure out how to resize the text here.-->
+          <div class="step" data-step="8">
+            <p>
+              A donation of $250 fully funds a signature Red Book Bag rotation
+              for one child and their family.
+              <br />$500 = Increase accessibility to books by providing
+              <b>35</b> books to families across MA. <br />$1,500 = Increase
+              accessibility by providing <b>100</b> books to families across MA
+              <br />$5,000 = Provides our signature Red Book Bag rotation for
+              <b>20</b> children and their families
+            </p>
+          </div>
+
+          <div class="step" data-step="9">
+            <p>
+              Donations directly support our <b>Red Book Bag rotation</b>,
+              caregiver workshops, provide training, and more for the
+              <b>6,500 families</b> we serve across Massachusetts. See the links
+              below for ways<b>you</b> can support our efforts to serve
+              Massachusetts' children and forge a brighter future.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section id="">
+        <div class="container">
+          <!-- tell bootstrap we're going to use a grid -->
+          <div class="row">
+            <!-- a horizontal set of content -->
+            <div class="col-12">
+              <!-- content layout full width on all devices -->
+              <p>
+                <b
+                  ><a href="https://raisingareaderma.org/donate/#donate-form">
+                    Click here to donate a one-time or recurring amount of any
+                    size.</a
+                  >
+                </b>
+                <br />
+                <b
+                  ><a href="https://raisingareaderma.org/plannedgiving/">
+                    Click here for information on including us in your estate
+                    planning.</a
+                  >
+                </b>
+                <br />
+                <b
+                  ><a
+                    href="https://www.amazon.com/hz/wishlist/ls/1O2SVSHPJOTQ9?ref_=wl_share9?ref_=wl_share"
+                  >
+                    Want to buy a book for a child in need? Click here to check
+                    out our Amazon Wishlist!</a
+                  ></b
+                >
+                <br />
+                <b
+                  ><a
+                    href="https://raisingareaderma.org/wp-content/uploads/2022/12/Sponsorship-2023-_-Partners-w-a-Purpose.pdf"
+                  >
+                    Are you part of a company interested in forming a long-term
+                    partnership? Click here to learn more.</a
+                  ></b
+                >
+                <br />
+                <b
+                  ><a
+                    href="https://raisingareaderma.org/get-involved/#support"
+                    >Click here for even more ways to support us.</a
+                  >
+                </b>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- the footer is used to show credits -->
+    <footer>
+      <div class="container">
+        <!-- tell bootstrap we're going to use a grid -->
+        <div class="row">
+          <!-- a horizontal set of content -->
+          <div class="col-12">
+            <!-- content layout full width on all devices -->
+            <p>
+              An article created by Sean Ayoub and Bethany Ward at Northeastern
+              University as part of
+              <b
+                ><a href="https://camd.northeastern.edu/faculty/rahul-bhargava/"
+                  >Rahul Bhargava's</a
+                ></b
+              >
+              <em>Coding for Digital Storytelling</em> class.
+
+              <br />
+              Source code on
+              <b
+                ><a href="https://github.com/dataculturegroup/our-cup">GitHub</a
+                >.</b
+              >
+
+              <br />
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="text/javascript">
+      // initialize the interaction here, because the body content *should* have been loaded
+      // and we can access the rendered DOM
+      Project.scrolling.initialize();
+    </script>
+
+    <script type="text/javascript">
+      // This is a placeholder where you would want to add in any JS code you get
+      // from an analytics tracker. It is _not_ included in the head tag because you
+      // don't want it to slow down page content loading.
+    </script>
+  </body>
+</html>
