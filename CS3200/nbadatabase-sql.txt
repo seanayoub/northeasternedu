@@ -1,0 +1,328 @@
+-- NBA Database Implementation
+
+-- Drop tables if they exist (in reverse order of creation to handle foreign key constraints)
+DROP TABLE IF EXISTS Award_NBA_Player CASCADE;
+DROP TABLE IF EXISTS Award CASCADE;
+DROP TABLE IF EXISTS NBA_Players_College_Team CASCADE;
+DROP TABLE IF EXISTS College_Team CASCADE;
+DROP TABLE IF EXISTS Stats CASCADE;
+DROP TABLE IF EXISTS NBA_G_NBA_Player CASCADE;
+DROP TABLE IF EXISTS NBA_G_League_Team CASCADE;
+DROP TABLE IF EXISTS NBA_Team_NBA_Player CASCADE;
+DROP TABLE IF EXISTS Head_Coach_NBA_Team CASCADE;
+DROP TABLE IF EXISTS Head_Coach CASCADE;
+DROP TABLE IF EXISTS NBA_Player CASCADE;
+DROP TABLE IF EXISTS NBA_Team CASCADE;
+DROP TABLE IF EXISTS Owner CASCADE;
+
+-- Create tables
+
+-- Owner table
+CREATE TABLE Owner (
+    oid INTEGER PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    nid INTEGER
+);
+
+-- NBA_Team table
+CREATE TABLE NBA_Team (
+    nid INTEGER PRIMARY KEY,
+    team_name VARCHAR(100) NOT NULL,
+    number_of_championships INTEGER DEFAULT 0,
+    salary_cap DECIMAL(15, 2),
+    city VARCHAR(100),
+    team_record VARCHAR(100),
+    ngid INTEGER
+);
+
+-- NBA_Player table
+CREATE TABLE NBA_Player (
+    pid INTEGER PRIMARY KEY,
+    player_name VARCHAR(100) NOT NULL,
+    all_star BOOLEAN DEFAULT FALSE,
+    all_NBA BOOLEAN DEFAULT FALSE,
+    num_playoff_games INTEGER DEFAULT 0,
+    height DECIMAL(5, 2),
+    weight DECIMAL(5, 2),
+    salary DECIMAL(15, 2),
+    age INTEGER,
+    sid INTEGER
+);
+
+-- Head_Coach table
+CREATE TABLE Head_Coach (
+    hcid INTEGER PRIMARY KEY,
+    coach_name VARCHAR(100) NOT NULL
+);
+
+-- Head_Coach_NBA_Team relationship
+CREATE TABLE Head_Coach_NBA_Team (
+    hcid INTEGER,
+    nid INTEGER,
+    start_date DATE,
+    end_date DATE,
+    PRIMARY KEY (hcid, nid),
+    FOREIGN KEY (hcid) REFERENCES Head_Coach(hcid),
+    FOREIGN KEY (nid) REFERENCES NBA_Team(nid)
+);
+
+-- NBA_Team_NBA_Player relationship
+CREATE TABLE NBA_Team_NBA_Player (
+    nid INTEGER,
+    pid INTEGER,
+    start_date DATE,
+    end_date DATE,
+    PRIMARY KEY (nid, pid),
+    FOREIGN KEY (nid) REFERENCES NBA_Team(nid),
+    FOREIGN KEY (pid) REFERENCES NBA_Player(pid)
+);
+
+-- NBA_G_League_Team table
+CREATE TABLE NBA_G_League_Team (
+    ngid INTEGER PRIMARY KEY,
+    g_league_team_name VARCHAR(100) NOT NULL
+);
+
+-- NBA_G_NBA_Player relationship
+CREATE TABLE NBA_G_NBA_Player (
+    ngid INTEGER,
+    pid INTEGER,
+    season VARCHAR(10),
+    year INTEGER,
+    PRIMARY KEY (ngid, pid),
+    FOREIGN KEY (ngid) REFERENCES NBA_G_League_Team(ngid),
+    FOREIGN KEY (pid) REFERENCES NBA_Player(pid)
+);
+
+-- Stats table
+CREATE TABLE Stats (
+    sid INTEGER PRIMARY KEY,
+    points_per_game DECIMAL(5, 2),
+    assists_per_game DECIMAL(5, 2),
+    rebounds_per_game DECIMAL(5, 2),
+    steals_per_game DECIMAL(5, 2),
+    blocks_per_game DECIMAL(5, 2),
+    total_points INTEGER,
+    total_rebounds INTEGER,
+    total_assists INTEGER,
+    total_minutes INTEGER,
+    minutes_per_game DECIMAL(5, 2),
+    number_of_wins INTEGER,
+    season VARCHAR(10)
+);
+
+-- College_Team table
+CREATE TABLE College_Team (
+    colid INTEGER PRIMARY KEY,
+    team_name VARCHAR(100) NOT NULL
+);
+
+-- NBA_Players_College_Team relationship
+CREATE TABLE NBA_Players_College_Team (
+    pid INTEGER,
+    colid INTEGER,
+    start_date DATE,
+    end_date DATE,
+    PRIMARY KEY (pid, colid),
+    FOREIGN KEY (pid) REFERENCES NBA_Player(pid),
+    FOREIGN KEY (colid) REFERENCES College_Team(colid)
+);
+
+-- Award table
+CREATE TABLE Award (
+    aid INTEGER PRIMARY KEY,
+    award_name VARCHAR(100) NOT NULL
+);
+
+-- Award_NBA_Player relationship
+CREATE TABLE Award_NBA_Player (
+    aid INTEGER,
+    pid INTEGER,
+    season VARCHAR(10),
+    years INTEGER,
+    PRIMARY KEY (aid, pid),
+    FOREIGN KEY (aid) REFERENCES Award(aid),
+    FOREIGN KEY (pid) REFERENCES NBA_Player(pid)
+);
+
+-- Add foreign key constraints that couldn't be added during table creation
+ALTER TABLE NBA_Team
+ADD CONSTRAINT fk_nba_team_g_league
+FOREIGN KEY (ngid) REFERENCES NBA_G_League_Team(ngid);
+
+ALTER TABLE Owner
+ADD CONSTRAINT fk_owner_nba_team
+FOREIGN KEY (nid) REFERENCES NBA_Team(nid);
+
+ALTER TABLE NBA_Player
+ADD CONSTRAINT fk_nba_player_stats
+FOREIGN KEY (sid) REFERENCES Stats(sid);
+
+-- Insert sample data
+
+-- Insert G-League teams
+INSERT INTO NBA_G_League_Team VALUES (101, 'Raptors 905');
+INSERT INTO NBA_G_League_Team VALUES (102, 'Austin Spurs');
+INSERT INTO NBA_G_League_Team VALUES (103, 'Santa Cruz Warriors');
+INSERT INTO NBA_G_League_Team VALUES (104, 'Westchester Knicks');
+
+-- Insert NBA teams
+INSERT INTO NBA_Team VALUES (1, 'Los Angeles Lakers', 17, 136000000, 'Los Angeles', '52-30', 102);
+INSERT INTO NBA_Team VALUES (2, 'Boston Celtics', 17, 134000000, 'Boston', '58-24', 104);
+INSERT INTO NBA_Team VALUES (3, 'Golden State Warriors', 7, 138000000, 'San Francisco', '44-38', 103);
+INSERT INTO NBA_Team VALUES (4, 'Toronto Raptors', 1, 132000000, 'Toronto', '41-41', 101);
+
+-- Insert Owners
+INSERT INTO Owner VALUES (201, 'Joe Lacob', 3);
+INSERT INTO Owner VALUES (202, 'Wyc Grousbeck', 2);
+INSERT INTO Owner VALUES (203, 'Jeanie Buss', 1);
+INSERT INTO Owner VALUES (204, 'Larry Tanenbaum', 4);
+
+-- Insert Stats
+INSERT INTO Stats VALUES (301, 27.1, 5.2, 8.3, 1.1, 1.2, 2216, 682, 423, 2450, 32.1, 45, '2023-2024');
+INSERT INTO Stats VALUES (302, 25.8, 6.5, 4.8, 1.8, 0.4, 1856, 346, 468, 2389, 33.2, 52, '2023-2024');
+INSERT INTO Stats VALUES (303, 31.2, 10.2, 6.7, 2.1, 0.7, 2527, 543, 826, 2690, 36.4, 41, '2023-2024');
+INSERT INTO Stats VALUES (304, 14.7, 3.9, 8.5, 0.7, 1.9, 1191, 689, 316, 1980, 24.4, 38, '2023-2024');
+INSERT INTO Stats VALUES (305, 18.3, 7.5, 3.2, 1.5, 0.3, 1482, 259, 608, 2105, 26.0, 35, '2023-2024');
+INSERT INTO Stats VALUES (307, 16.2, 4.1, 7.3, 1.2, 0.5, 1296, 584, 328, 1840, 23.0, 36, '2023-2024');
+INSERT INTO Stats VALUES (308, 12.8, 3.8, 5.9, 0.8, 1.7, 1024, 472, 304, 1760, 22.0, 29, '2023-2024');
+INSERT INTO Stats VALUES (309, 10.5, 6.2, 4.1, 1.3, 0.4, 840, 328, 496, 1680, 21.0, 25, '2023-2024');
+
+-- Insert NBA Players
+INSERT INTO NBA_Player VALUES (501, 'LeBron James', TRUE, TRUE, 156, 6.8, 250, 43000000, 39, 301);
+INSERT INTO NBA_Player VALUES (502, 'Jayson Tatum', TRUE, TRUE, 104, 6.3, 215, 36000000, 28, 302);
+INSERT INTO NBA_Player VALUES (503, 'Stephen Curry', TRUE, TRUE, 97, 6.2, 185, 51000000, 30, 303);
+INSERT INTO NBA_Player VALUES (504, 'Scottie Barnes', FALSE, FALSE, 42, 6.10, 240, 12000000, 24, 304);
+INSERT INTO NBA_Player VALUES (505, 'Fred VanVleet', TRUE, FALSE, 72, 6.1, 190, 28000000, 26, 305);
+INSERT INTO NBA_Player VALUES (507, 'Jordan Poole', FALSE, FALSE, 65, 6.4, 194, 17500000, 25, 307);
+INSERT INTO NBA_Player VALUES (508, 'Duncan Robinson', FALSE, FALSE, 48, 6.7, 215, 16900000, 29, 308);
+INSERT INTO NBA_Player VALUES (509, 'Alex Caruso', FALSE, FALSE, 53, 6.5, 186, 9030000, 30, 309);
+
+-- Insert College Teams
+INSERT INTO College_Team VALUES (601, 'Duke University');
+INSERT INTO College_Team VALUES (602, 'University of Kentucky');
+INSERT INTO College_Team VALUES (603, 'UCLA');
+INSERT INTO College_Team VALUES (604, 'University of Kansas');
+INSERT INTO College_Team VALUES (605, 'University of North Carolina');
+
+-- Insert NBA Players College Team relationships
+INSERT INTO NBA_Players_College_Team VALUES (501, 603, '2003-09-01', '2003-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (502, 602, '2014-09-01', '2016-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (503, 601, '2011-09-01', '2013-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (504, 604, '2018-09-01', '2019-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (505, 605, '2016-09-01', '2018-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (507, 605, '2017-09-01', '2019-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (508, 605, '2015-09-01', '2017-06-15');
+INSERT INTO NBA_Players_College_Team VALUES (509, 603, '2014-09-01', '2016-06-15');
+
+-- Insert Head Coaches
+INSERT INTO Head_Coach VALUES (701, 'Steve Kerr');
+INSERT INTO Head_Coach VALUES (702, 'Joe Mazzulla');
+INSERT INTO Head_Coach VALUES (703, 'Darvin Ham');
+INSERT INTO Head_Coach VALUES (704, 'Darko Rajaković');
+
+-- Insert Head Coach NBA Team relationships
+INSERT INTO Head_Coach_NBA_Team VALUES (701, 3, '2014-05-15', NULL);
+INSERT INTO Head_Coach_NBA_Team VALUES (702, 2, '2022-09-23', NULL);
+INSERT INTO Head_Coach_NBA_Team VALUES (703, 1, '2022-06-03', NULL);
+INSERT INTO Head_Coach_NBA_Team VALUES (704, 4, '2023-06-10', NULL);
+
+-- Insert NBA Team NBA Player relationships
+INSERT INTO NBA_Team_NBA_Player VALUES (1, 501, '2018-07-10', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (2, 502, '2017-08-31', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (3, 503, '2009-06-25', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (4, 504, '2019-07-15', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (4, 505, '2020-08-05', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (1, 507, '2022-07-01', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (2, 508, '2021-08-15', NULL);
+INSERT INTO NBA_Team_NBA_Player VALUES (3, 509, '2022-06-30', NULL);
+
+-- Insert G-League NBA Player relationships
+INSERT INTO NBA_G_NBA_Player VALUES (103, 503, '2011-2012', 2012);
+INSERT INTO NBA_G_NBA_Player VALUES (101, 504, '2019-2020', 2020);
+INSERT INTO NBA_G_NBA_Player VALUES (101, 505, '2020-2021', 2021);
+INSERT INTO NBA_G_NBA_Player VALUES (103, 507, '2020-2021', 2021);
+INSERT INTO NBA_G_NBA_Player VALUES (104, 508, '2018-2019', 2019);
+INSERT INTO NBA_G_NBA_Player VALUES (102, 509, '2017-2018', 2018);
+
+-- Insert Awards
+INSERT INTO Award VALUES (801, 'Most Valuable Player');
+INSERT INTO Award VALUES (802, 'Defensive Player of the Year');
+INSERT INTO Award VALUES (803, 'Most Improved Player');
+INSERT INTO Award VALUES (804, 'Rookie of the Year');
+INSERT INTO Award VALUES (805, 'Sixth Man of the Year');
+
+-- Insert Award NBA Player relationships
+INSERT INTO Award_NBA_Player VALUES (801, 501, '2019-2020', 2020);
+INSERT INTO Award_NBA_Player VALUES (802, 502, '2021-2022', 2022);
+INSERT INTO Award_NBA_Player VALUES (801, 503, '2014-2015', 2015);
+INSERT INTO Award_NBA_Player VALUES (804, 504, '2019-2020', 2020);
+INSERT INTO Award_NBA_Player VALUES (803, 505, '2021-2022', 2022);
+
+-- QUERY 1: Find players who have won MVP award
+SELECT p.pid, p.player_name, team.team_name AS "Current Team", p.salary, p.all_star, a.award_name, ap.season
+FROM NBA_Player p
+JOIN NBA_Team_NBA_Player tnp ON p.pid = tnp.pid
+JOIN NBA_Team team ON tnp.nid = team.nid
+JOIN Award_NBA_Player ap ON p.pid = ap.pid
+JOIN Award a ON ap.aid = a.aid
+WHERE a.award_name = 'Most Valuable Player';
+
+-- QUERY 2: Get average salary of All-Star players by team
+SELECT team.team_name, COUNT(p.pid) AS "Number of All-Stars", AVG(p.salary) AS "Average All-Star Salary"
+FROM NBA_Team team
+JOIN NBA_Team_NBA_Player tnp ON team.nid = tnp.nid
+JOIN NBA_Player p ON tnp.pid = p.pid
+WHERE p.all_star = TRUE
+GROUP BY team.team_name
+HAVING COUNT(p.pid) > 0;
+
+-- QUERY 3: Find teams and their players with total points scored over 2000 (aggregate with HAVING)
+SELECT team.team_name, COUNT(p.pid) AS "Number of Players", SUM(s.total_points) AS "Total Team Points"
+FROM NBA_Team team
+JOIN NBA_Team_NBA_Player tnp ON team.nid = tnp.nid
+JOIN NBA_Player p ON tnp.pid = p.pid
+JOIN Stats s ON p.sid = s.sid
+GROUP BY team.team_name
+HAVING SUM(s.total_points) > 2000;
+
+-- QUERY 4: Left outer join to find all coaches including those without NBA teams currently
+SELECT hc.coach_name, team.team_name, hcnt.start_date
+FROM Head_Coach hc
+LEFT OUTER JOIN Head_Coach_NBA_Team hcnt ON hc.hcid = hcnt.hcid
+LEFT OUTER JOIN NBA_Team team ON hcnt.nid = team.nid;
+
+-- QUERY 5: Find players who played in a G-League team and their college (Witness query)
+SELECT p.pid, p.player_name, team.team_name AS "NBA Team", g.g_league_team_name AS "G-League Team", 
+       c.team_name AS "College Team", s.points_per_game, s.assists_per_game, s.rebounds_per_game,
+       gnp.season AS "G-League Season"
+FROM NBA_Player p
+JOIN NBA_Team_NBA_Player tnp ON p.pid = tnp.pid
+JOIN NBA_Team team ON tnp.nid = team.nid
+JOIN NBA_G_NBA_Player gnp ON p.pid = gnp.pid
+JOIN NBA_G_League_Team g ON gnp.ngid = g.ngid
+JOIN NBA_Players_College_Team pct ON p.pid = pct.pid
+JOIN College_Team c ON pct.colid = c.colid
+JOIN Stats s ON p.sid = s.sid
+WHERE EXISTS (
+    SELECT 1
+    FROM NBA_G_NBA_Player gnp2
+    WHERE gnp2.pid = p.pid
+);
+
+-- Insert Statement 1: Add a new player
+INSERT INTO Stats VALUES (306, 18.5, 7.2, 5.1, 1.3, 0.8, 1480, 408, 576, 2160, 27.0, 32, '2023-2024');
+INSERT INTO NBA_Player VALUES (506, 'Tyler Herro', FALSE, FALSE, 12, 6.5, 210, 8500000, 23, 306);
+INSERT INTO NBA_Team_NBA_Player VALUES (2, 506, '2023-08-10', NULL);
+INSERT INTO NBA_Players_College_Team VALUES (506, 602, '2020-09-01', '2022-06-15');
+
+-- Insert Statement 2: Record a new award for a player
+INSERT INTO Award_NBA_Player VALUES (805, 505, '2023-2024', 2024);
+
+-- Update Statement: Update Jayson Tatum's stats after an exceptional performance
+UPDATE Stats
+SET total_points = total_points + 150,
+    points_per_game = ROUND((total_points + 150.0) / (total_minutes / minutes_per_game), 1),
+    total_assists = total_assists + 42,
+    assists_per_game = ROUND((total_assists + 42.0) / (total_minutes / minutes_per_game), 1)
+WHERE sid = (SELECT sid FROM NBA_Player WHERE player_name = 'Jayson Tatum');
